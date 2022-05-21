@@ -1,19 +1,23 @@
 #pragma once
+#include "Ticket.h"
+#include "TicketsRegister.h"
 
 class ControlAttempt{
 
-	//int time; // по заданию эта переменная должна быть
-	bool pass;
+	bool pass; // удачная или неудачная попытка прохода контроля
 
 public:
-	//! Попытка прохода контроля
-	//! \param ticketType предъявляемый билет
-	//! \param time время прохода контроля
-	//! \param pass удачная или неудачная попытка прохода контроля
- 
-	template <typename T>
-	ControlAttempt(T& ticketType, int time){
-		pass = ticketType.controlAttempt(time);
+	//! контроль попыток использования билета
+	ControlAttempt(){
+		pass = 0;
 	}
+
+	//! Попытка прохода контроля
+	//! \param ticketsRegister регистр билетов
+	//! \param ticketType предъявляемый билет
+	//! \param ticketNumber номер билета
+	//! \param time время прохода контроля
+	//! \return true, если попытка удачная
+	bool attemptCheck(TicketsRegister* ticketsRegister, int ticketNumber);
 };
 

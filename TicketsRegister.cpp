@@ -89,21 +89,19 @@ node* insert(node* p, int k) // вставка ключа k в дерево с корнем p
 
 void TicketsRegister::add(int ticketNumber){
 
-	printf("The ticket number %d is added in Register\n", ticketNumber);
+	//printf("The ticket number %d is added in Register\n", ticketNumber);
 	head = insert(head, ticketNumber);
 }
 
-bool TicketsRegister::check(Ticket* ticketType, int ticketNumber, int time){
+bool TicketsRegister::checkTicketNumber(int ticketNumber){
 
-	//проверка наличия билета в регистре
 	node* p = head;
 	if (p == nullptr) {
-		printf("The ticket number %d: not in Register\n", ticketNumber);
+		//printf("The ticket number %d: not in Register\n", ticketNumber);
 		return false;
 	}
-	
-	//проверка наличия билета в регистре
-	int k = ticketType->number;
+
+	int k = ticketNumber;
 
 	while (k != p->key && (p->left != nullptr || p->right != nullptr)){
 	if (k < p->key)
@@ -111,16 +109,9 @@ bool TicketsRegister::check(Ticket* ticketType, int ticketNumber, int time){
 	else
 		p = p->right;
 	}
-
-	//проверка найденного билета на срок действия или число оставшихся поездок 
-	if (k == p->key) {				
-		if (!ticketType->controlAttempt(time))
-			return false;
-		return true;
-	}
 		
-	else {
-		printf("The ticket number %d: not in Register\n", ticketNumber);
+	if (k != p->key) {
+		//printf("The ticket number %d: not in Register\n", ticketNumber);
 		return false;
 	}
 }

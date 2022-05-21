@@ -14,16 +14,7 @@ public:
 		:Ticket(number, time) {
 		this->validityPeriod = validityPeriod;
 	}
-	/*
-	//! операторы сравнения по времени прохода
-	bool operator==(const TicketDaysLimited& other) const {
-		return this->time == other.time; //return this->time == other.time;
-	}
 
-	bool operator<(const TicketDaysLimited& other) const {
-		return this->time < other.time;
-	}
-	*/
 	//! попытка прохода контроля
 	//! \return true, если проход успешный
 	bool controlAttempt(int newtime);

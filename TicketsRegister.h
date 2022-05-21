@@ -2,7 +2,7 @@
 #include "Ticket.h"
 
 class TicketsRegister{
-
+	friend class ControlAttempt;
 public:
 
 	//! создать регистр билетов
@@ -11,8 +11,8 @@ public:
 	//! добавление билета в регистр
 	void add(int ticketNumber);
 	
-	//! проверка билета в регистре
-	//! \return true, если проверка билета успешная
-	bool check(Ticket* ticketType, int ticketNumber, int time);
+	//! проверка номера билета в регистре
+	//! \return true, если билет есть в регистре
+	bool checkTicketNumber(int ticketNumber);
 };
 

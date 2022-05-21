@@ -21,15 +21,6 @@ public:
 		this->timegap = timegap;
 		this->timeLastPass = time - timegap;
 	}
-	/*
-	//! операторы сравнения по времени прохода
-	bool operator==(const TicketTripsLimited& other) const {
-		return this->time == other.time; //return this->time == other.time;
-	}
-
-	bool operator<(const TicketTripsLimited& other) const {
-		return this->time < other.time;
-	}*/
 	
 	//! попытка прохода контроля
 	//! \return true, если проход успешный
