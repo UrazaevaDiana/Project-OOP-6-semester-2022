@@ -1,5 +1,5 @@
 import ctypes
-Tickets_Library = ctypes.CDLL('./Project_Urazaeva_Diana_step_3_v210522-2014.dll')
+Tickets_Library = ctypes.CDLL('./Project_Urazaeva_Diana_step_3_v220522-1256.dll')
 
 Tickets_Library.create_ticketTripsLimited.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
 Tickets_Library.create_ticketTripsLimited.restype = ctypes.c_void_p
@@ -35,36 +35,44 @@ register = Tickets_Library.create_register()
 
 print('Hello, passenger!');
 continue_flag = 1
+action = 0
+ticket_type = 0
 
 while (continue_flag == 1):
-    action = int(input('If you want to buy a ticket, please, enter 1\n''If you want to pass the control, please, enter 2\n'))
+    try:
+        action = int(input('If you want to buy a ticket, please, enter 1\n''If you want to pass the control, please, enter 2\n'))
+    except ValueError:
+        print('invalid character')
     if (action == 1): # to buy a ticket
-        ticket_type = int(input('If you want to buy\n \t a trips limited ticket, please, enter 1\n''\t a days limited ticket, please, enter 2\n'))
+        try:
+            ticket_type = int(input('If you want to buy\n \t a trips limited ticket, please, enter 1\n''\t a days limited ticket, please, enter 2\n'))
+        except ValueError:
+            print('invalid character')
+            continue_flag = int(input('to continue enter 1, to exit enter 2\n'))
+
         if (ticket_type == 1):
             maxTrips = int(input('enter max number of trips you want \n'))
             if (maxTrips <= 0 or type(maxTrips) is not int):
                 print('invalid  max number of trips')
-            ticket = Tickets_Library.create_ticketTripsLimited(ticket_number, time.process_time_ns(), maxTrips, timegap)
-            tickets_trips.append(ticket)
-            ticket_dict[ticket_number] = ticket
-            Tickets_Library.add_ticket_to_register(register, ticket)
-            print('The ticket number', ticket_number,'is added in Register\n')
-            ticket_number += 1
+            else:
+                ticket = Tickets_Library.create_ticketTripsLimited(ticket_number, time.process_time_ns(), maxTrips, timegap)
+                tickets_trips.append(ticket)
+                ticket_dict[ticket_number] = ticket
+                Tickets_Library.add_ticket_to_register(register, ticket)
+                print('The ticket number', ticket_number,'is added in Register\n')
+                ticket_number += 1
     
         if (ticket_type == 2):
             validityPeriod = int(input('enter ticket validity period [s] you want\n')) * 10**9
             if (validityPeriod <= 0 or type(validityPeriod) is not int):
                 print('invalid ticket validity period')
-            ticket = Tickets_Library.create_ticketDaysLimited(ticket_number, time.process_time_ns(), validityPeriod)
-            tickets_days.append(ticket)
-            ticket_dict[ticket_number] = ticket
-            Tickets_Library.add_ticket_to_register(register, ticket)
-            print('The ticket number', ticket_number,'is added in Register\n')
-
-            ticket_number += 1
-   
-        if (ticket_type != 1 and ticket_type != 2):
-            print('invalid character')
+            else:
+                ticket = Tickets_Library.create_ticketDaysLimited(ticket_number, time.process_time_ns(), validityPeriod)
+                tickets_days.append(ticket)
+                ticket_dict[ticket_number] = ticket
+                Tickets_Library.add_ticket_to_register(register, ticket)
+                print('The ticket number', ticket_number,'is added in Register\n')
+                ticket_number += 1
 
     if (action == 2): # to pass the control
         #print('time: current, start, differensce', time.process_time_ns(), t_start, time.process_time_ns() - t_start)
@@ -79,10 +87,9 @@ while (continue_flag == 1):
             print('The ticket number',check_the_ticket_number,'not in Register\n');
         Tickets_Library.delete_control_attempt(control)
 
-    if (action != 1 and action != 2):
-        print('invalid character')
-
     continue_flag = int(input('to continue enter 1, to exit enter 2\n'))
+    action = 0
+    ticket_type = 0
 
 for ticket in tickets_trips:
     Tickets_Library.delete_ticketTripsLimited(ticket)
