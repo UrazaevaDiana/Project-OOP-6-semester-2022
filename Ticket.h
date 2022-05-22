@@ -38,5 +38,7 @@ public:
 	bool operator<(Ticket& other) const {
 		return this->time < other.get_time();
 	}
+
+	virtual ~Ticket() {}
 };
 

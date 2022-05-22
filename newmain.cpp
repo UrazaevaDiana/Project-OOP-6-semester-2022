@@ -5,11 +5,20 @@
 #include "ControlAttempt.h"
 #include "TicketsRegister.h"
 #include "pch.h"
+#include <exception> 
 
 extern "C" {
 
 	__declspec(dllexport) TicketTripsLimited* create_ticketTripsLimited(int number, int time, int maxTrips, int timegap) {
-		return new TicketTripsLimited(number, time, maxTrips, timegap);
+
+		try {
+			return new TicketTripsLimited(number, time, maxTrips, timegap);
+		}
+
+		catch (const std::exception&) {
+			printf("Incorrect Parameter Exception: maxTrips is not a positive number\n");
+			return nullptr;
+		}
 	}
 
 	__declspec(dllexport) void delete_ticketTripsLimited(TicketTripsLimited* T) {
@@ -49,9 +58,6 @@ extern "C" {
 	}
 
 	__declspec(dllexport) bool check_whole_ticket(Ticket* ticketType, int ticketNumber, int time) {
-		if (ticketType->controlAttempt(time))
-			return true;
-		else
-			return false;
+		return ticketType->controlAttempt(time);
 	}
 }

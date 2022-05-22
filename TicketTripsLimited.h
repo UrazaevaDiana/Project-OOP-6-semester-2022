@@ -1,5 +1,7 @@
 #pragma once
+#include <stdio.h>
 #include "Ticket.h"
+#include <exception> 
 
 class TicketTripsLimited: public Ticket{
 	int maxTrips;
@@ -16,10 +18,17 @@ public:
 	//! \param timeLastPass время последнего прозода
 	TicketTripsLimited(int number, int time, int maxTrips, int timegap) :
 		Ticket(number, time) {
-		this->leftTrips = maxTrips;
-		this->maxTrips = maxTrips;
+		//this->leftTrips = maxTrips;
+		//this->maxTrips = maxTrips;
 		this->timegap = timegap;
 		this->timeLastPass = time - timegap;
+
+		if (maxTrips <= 0)
+				throw std::exception();
+		else {
+				this->leftTrips = maxTrips;
+				this->maxTrips = maxTrips;
+			}
 	}
 	
 	//! попытка прохода контроля
